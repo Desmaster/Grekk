@@ -42,11 +42,10 @@ class Grekk {
 void main() {
   Grekk game = new Grekk();
 
-  var response = HttpRequest.getString("http://localhost/dart-api/", [false, null])
+  var response = HttpRequest.getString("http://localhost/dart-api/", withCredentials: true, onProgress:print)
                  .then((String text) {
                    print(text);
                  });
-  
   game.start();
 }
 
