@@ -1,6 +1,4 @@
-library Keyboard;
-
-import 'dart:html';
+part of Input;
 
 class Keyboard {
   
@@ -103,7 +101,7 @@ class Keyboard {
   
   static List keys = new List(700);
   
-  static void init() {
+  static void create() {
     window.onKeyDown.listen(keyDown);
     window.onKeyUp.listen(keyUp);
   }

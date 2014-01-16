@@ -2,7 +2,7 @@ library display;
 
 import 'dart:html';
 
-import 'Keyboard.dart';
+import 'input/Input.dart';
 
 class Display {
   
@@ -12,7 +12,8 @@ class Display {
   
   static void init() {
     canvas = querySelector("#canvas") as CanvasElement;
-    Keyboard.init();
+    Keyboard.create();
+    Mouse.create();
     graphics = canvas.context2D;
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
