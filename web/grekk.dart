@@ -2,7 +2,6 @@ import 'dart:html';
 import 'dart:async'; 
 
 import 'Display.dart';
-import 'Keyboard.dart';
 
 class Grekk {
     
@@ -28,9 +27,6 @@ class Grekk {
   }
   
   void tick() {
-    if (Keyboard.isKeyDown(38)) {
-      print("Key!!");
-    }
   }
   
   void render() {
