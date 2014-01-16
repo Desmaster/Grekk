@@ -1,13 +1,12 @@
 import 'dart:html';
 import 'dart:async'; 
 
-import 'Player.dart';
 import 'Display.dart';
+import 'Keyboard.dart';
 
 class Grekk {
     
   CanvasRenderingContext2D graphics;
-  Player player;
   Timer timer;
   bool running = false;
   int canvasWidth, canvasHeight;
@@ -15,12 +14,11 @@ class Grekk {
   Grekk() {
     Display.init();
     graphics = Display.getGraphics();
-    player = new Player();
   }
   
   void start() {
     running = true;
-    Duration duration = new Duration(milliseconds:500);
+    Duration duration = new Duration(milliseconds:17);
     timer = new Timer.periodic(duration, (Timer timer) => run());
   }
   
@@ -30,6 +28,9 @@ class Grekk {
   }
   
   void tick() {
+    if (Keyboard.isKeyDown(38)) {
+      print("Key!!");
+    }
   }
   
   void render() {
@@ -42,10 +43,6 @@ class Grekk {
 void main() {
   Grekk game = new Grekk();
 
-  var response = HttpRequest.getString("http://localhost/dart-api/", withCredentials: true, onProgress:print)
-                 .then((String text) {
-                   print(text);
-                 });
   game.start();
 }
 
