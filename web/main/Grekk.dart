@@ -2,7 +2,7 @@ import 'dart:html';
 import 'dart:async'; 
 
 import 'Display.dart';
-import 'Database.dart';
+import 'database/Database.dart';
 import 'dart:js';
 
 class Grekk {
@@ -14,14 +14,15 @@ class Grekk {
   int canvasWidth, canvasHeight;
   
   Grekk() {
-    database = new Database('tdegroot.nl');
+    database = new Database('localhost:81');
     Display.init();
     graphics = Display.getGraphics();
   }
   
   void start() {
+      database.query("SELECT * FROM customers");
       running = true;
-      Duration duration = new Duration(milliseconds:500);
+      Duration duration = new Duration(milliseconds:1000);
       timer = new Timer.periodic(duration, (Timer timer) => run());
   }
   
@@ -33,8 +34,6 @@ class Grekk {
   }
   
   void tick() {
-    
-    
     
   }
   
