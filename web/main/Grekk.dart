@@ -10,17 +10,17 @@ class Grekk {
   CanvasRenderingContext2D graphics;
   Database database;
   Timer timer;
+  Table table;
   bool running = false;
   int canvasWidth, canvasHeight;
   
   Grekk() {
-    database = new Database('localhost:81');
+    database = new Database('localhost');
     Display.init();
     graphics = Display.getGraphics();
   }
   
   void start() {
-      database.query("SELECT * FROM customers");
       running = true;
       Duration duration = new Duration(milliseconds:1000);
       timer = new Timer.periodic(duration, (Timer timer) => run());
@@ -34,7 +34,9 @@ class Grekk {
   }
   
   void tick() {
-    
+    table = database.query("SELECT City, count(*) as Amount FROM customers group by City ORDER BY Amount DESC LIMIT 5");
+    table.init();
+    print(table.json[0]);
   }
   
   void render() {

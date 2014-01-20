@@ -2,7 +2,7 @@ library Database;
 
 import 'dart:html';
 import 'dart:convert';
-import 'dart:js';
+import 'dart:collection';
 
 part 'QueryResult.dart';
 part 'Table.dart';
@@ -13,11 +13,9 @@ class Database {
   HttpRequest request;
   HttpRequest httpQuery;
   bool connected = false;
-  bool qcon = false;
   
   Database(String host) {
     this.host = host;
-    httpQuery = new HttpRequest();
   }
   
   void connectDB(String password) {
@@ -42,32 +40,25 @@ class Database {
     }
   }
   
-  void query(String q) {
-    if (!connected) return;
-    httpQuery.onReadyStateChange.listen(parseQuery);
+  QueryResult query(String q) {
+    if (!connected) return null;
+    httpQuery = new HttpRequest();
+    QueryResult result;
+    httpQuery.onReadyStateChange.listen((ProgressEvent e) {
+      String json = httpQuery.responseText;
+      if (json != "") {
+        print(json);
+        List response = JSON.decode(json);
+        result = new Table(response);
+      }
+    });
     String url = "http://$host/dart/";
     httpQuery.open('POST', url, async: false);
     Object postData = {"action" : "query", "password" : password, "query" : q};
     FormData data = new FormData();
     data.append("data", JSON.encode(postData));
     httpQuery.send(data);
-  }
-  
-  QueryResult parseQuery(ProgressEvent e) {
-    if (!qcon) {
-      qcon = true;
-      return null;
-    }
-    QueryResult result;
-    String json = httpQuery.responseText;
-    context.callMethod('alert', [json]);
-//    print(json);
-    var response = JSON.decode(json);
-    if (response["ERROR"] == "FAIL") {
-      result = new QueryResult(false, response); 
-    } else if(response["LOG"] == "SUCCES") {
-      result = new Table(response);
-    }
+    return result;
   }
   
 }
