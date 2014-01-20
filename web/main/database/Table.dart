@@ -6,7 +6,8 @@ class Table extends QueryResult {
   Table(List rows) : super(true, rows);
   
   void init() {
-    print(json.length);
+//    print(json.length);
+    
   }
   
   dynamic get() {

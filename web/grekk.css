@@ -21,4 +21,9 @@ h1, p {
 #canvas {
   font-size: 24pt;
   text-align: center;
+  margin-right: 75px;
+  float: left
+}
+
+#controls {
 }

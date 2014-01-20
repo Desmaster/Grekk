@@ -9,20 +9,20 @@ part 'Table.dart';
 
 class Database {
   
-  String host, password;
+  String host, url, password;
   HttpRequest request;
   HttpRequest httpQuery;
   bool connected = false;
   
   Database(String host) {
     this.host = host;
+    url = "http://$host/dart/";
   }
   
   void connectDB(String password) {
     this.password = password;
     request = new HttpRequest();
     request.onReadyStateChange.listen(onReady);
-    String url = "http://$host/dart/";
     request.open('POST', url, async: false);
     Object postData = {"action" : "connect", "password" : password};
     FormData data = new FormData();
@@ -45,14 +45,14 @@ class Database {
     httpQuery = new HttpRequest();
     QueryResult result;
     httpQuery.onReadyStateChange.listen((ProgressEvent e) {
-      String json = httpQuery.responseText;
-      if (json != "") {
-        print(json);
-        List response = JSON.decode(json);
-        result = new Table(response);
+      if (request.readyState == HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
+        String json = httpQuery.responseText;
+        if (json != "") {
+          List response = JSON.decode(json);
+          result = new Table(response);
+        }
       }
     });
-    String url = "http://$host/dart/";
     httpQuery.open('POST', url, async: false);
     Object postData = {"action" : "query", "password" : password, "query" : q};
     FormData data = new FormData();
